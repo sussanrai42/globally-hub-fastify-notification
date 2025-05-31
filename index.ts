@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyServerOptions } from "fastify";
 import App from "./src/app";
+import { consumeMessage } from "./src/service/consumer";
 
 const options: FastifyServerOptions = {
 	logger: true
@@ -15,3 +16,5 @@ app.listen({ port: 3000, host: '0.0.0.0' }, (err, address) => {
 	}
 	app.log.info(`Server listening at ${address}`);
 });
+
+consumeMessage();

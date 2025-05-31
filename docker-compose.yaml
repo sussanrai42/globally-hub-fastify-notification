@@ -5,14 +5,9 @@ services:
     build:
       context: .
       dockerfile: docker/local/Dockerfile
-    container_name: fastify-app
+    container_name: golballyhubfastify-app
     ports:
       - "3000:3000"
-    environment:
-      - AMQP_URL=amqp://admin:password@rabbitmq:5672
-      - NODE_ENV=development
-    # environment:
-    #   RABBITMQ_URL: amqp://rabbitmq:5672
     volumes:
       - .:/usr/src/app
     working_dir: /usr/src/app
