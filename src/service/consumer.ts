@@ -1,11 +1,18 @@
 import { Message } from "amqplib";
 import { getChannel, getConnection } from "./connection";
+import { processor } from "../events/processor.event";
 import { RateLimitNotificationException } from "../exceptions/rateLimitNotificationException.exception";
 
 async function processMessage(msg: Message): Promise<void> {
 	let body = JSON.parse(msg.content.toString());
 	console.log(body, 'Call email API here');
 	console.log(body.type, 'payload type');
+
+	await processor.processEvent({
+		userId: body.userId,
+		type: body.type,
+		data: body
+	});
 }
 
 const consumeMessage = async () => {
