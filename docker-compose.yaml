@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  fastify:
+    build:
+      context: .
+      dockerfile: docker/local/Dockerfile
+    container_name: fastify-app
+    ports:
+      - "3000:3000"
+    environment:
+      - AMQP_URL=amqp://admin:password@rabbitmq:5672
+      - NODE_ENV=development
+    # environment:
+    #   RABBITMQ_URL: amqp://rabbitmq:5672
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: >
+      sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- npm run dev'
+    networks:
+      - golballyhub
+networks:
+  golballyhub:
+    # driver: bridge
+    external: true
