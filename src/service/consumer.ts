@@ -69,6 +69,7 @@ const consumeMessage = async () => {
 			await channel.ack(msg);
 		} catch (error) {
 			console.error('Rabbitmq Error processing notification queue message:', error);
+
 			if (retryCount >= 3) {
 				console.error(`Max retries notification queue count ${retryCount} reached, discarding message`);
 			} else {
@@ -95,5 +96,15 @@ const consumeMessage = async () => {
 	});
 	console.log(" [*] Waiting for messages. To exit press CTRL+C");
 };
+
+// Immediately invoke async consumer startup
+(async () => {
+  try {
+    await consumeMessage();
+  } catch (err) {
+    console.error('Error starting consumer:', err);
+    process.exit(1);
+  }
+})();
 
 export { consumeMessage }

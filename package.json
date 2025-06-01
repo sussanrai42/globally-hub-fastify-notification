@@ -3,12 +3,13 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon index.ts",
-    "consumer": "nodemon consumer.js"
+    "consumer": "nodemon src/service/consumer.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",
     "@types/amqplib": "^0.10.7",
     "amqplib": "^0.10.8",
+    "axios": "^1.9.0",
     "dotenv": "^16.5.0",
     "fastify": "^5.3.3",
     "fastify-plugin": "^5.0.1",

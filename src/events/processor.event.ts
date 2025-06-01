@@ -7,12 +7,16 @@ import { Notification } from '@prisma/client';
 import { canSendNotification } from "../utils/ratelimiter.utils";
 import { RateLimitNotificationException } from "../exceptions/rateLimitNotificationException.exception";
 import { NOTIFICATION_TYPES } from "../constants/notification.type.constant";
+import notificationApiService, { NotificationApiService } from "../service/notificationApi.service";
 
 class EventProcessor {
     private handlers: Record<string, EventHandler>
     private notificationRepository: NotificationRepositoryInterface;
+    private notificationApiService: NotificationApiService;
+
     constructor() {
         this.notificationRepository = new NotificationRepository();
+        this,this.notificationApiService = notificationApiService;
         this.handlers = {
             'sms': this.handleSmsNotification.bind(this),
             'email': this.handleEmailNotification.bind(this),
@@ -42,7 +46,7 @@ class EventProcessor {
     async handleSmsNotification(event: ProcessEvent): Promise<void> {
         console.log('Handle sms notification:', event.data);
 
-        if (event.userId && !await canSendNotification(event.userId, NOTIFICATION_TYPES.SMS_NOTIFICATION)) {
+        if (!await canSendNotification(event.data.userId, NOTIFICATION_TYPES.SMS_NOTIFICATION)) {
             throw new RateLimitNotificationException('Rate limit exceeded');
         }
         
@@ -51,7 +55,8 @@ class EventProcessor {
             title: event.data.title,
             message: event.data.message
         }, EVENT_TYPES.SMS_NOTIFICATION);
-        this.createNotification(event);
+        await this.createNotification(event);
+        await this.updateNotificationApiServiceAsCompleted(event);
     }
 
     async handleEmailNotification(event: ProcessEvent): Promise<void> {
@@ -66,7 +71,8 @@ class EventProcessor {
             title: event.data.title,
             message: event.data.message
         }, EVENT_TYPES.EMAIL_NOTIFICATION);
-        this.createNotification(event);
+        await this.createNotification(event);
+        await this.updateNotificationApiServiceAsCompleted(event);
     }
 
     async handlePushNotification(event: ProcessEvent): Promise<void> {
@@ -81,7 +87,8 @@ class EventProcessor {
             title: event.data.title,
             message: event.data.message
         }, EVENT_TYPES.PUSH_NOTIFICATION);
-        this.createNotification(event);
+        await this.createNotification(event);
+        await this.updateNotificationApiServiceAsCompleted(event);
     }
 
     async createNotification(event: ProcessEvent): Promise<Notification>
@@ -92,6 +99,10 @@ class EventProcessor {
             message: event.data.message,
             payload: event.data
         });
+    }
+    
+    async updateNotificationApiServiceAsCompleted(event: ProcessEvent) {
+        await this.notificationApiService.updateNotificationAsCompleted(event.data.id);
     }
 }
 
