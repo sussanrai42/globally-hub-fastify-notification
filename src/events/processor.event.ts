@@ -1,13 +1,18 @@
 import { EventHandler, ProcessEvent } from "../types/notifications/processor.events.types";
 import {sendNotification} from "../notifications/dispatcher.notification";
 import { EVENT_TYPES } from "../constants/event.type.constant";
+import {NotificationRepository} from "../repositories/notification.repository"
+import {NotificationRepositoryInterface} from "../interfaces/notification.interface"
+import { Notification } from '@prisma/client';
 import { canSendNotification } from "../utils/ratelimiter.utils";
 import { RateLimitNotificationException } from "../exceptions/rateLimitNotificationException.exception";
 import { NOTIFICATION_TYPES } from "../constants/notification.type.constant";
 
 class EventProcessor {
     private handlers: Record<string, EventHandler>
+    private notificationRepository: NotificationRepositoryInterface;
     constructor() {
+        this.notificationRepository = new NotificationRepository();
         this.handlers = {
             'sms': this.handleSmsNotification.bind(this),
             'email': this.handleEmailNotification.bind(this),
@@ -45,6 +50,7 @@ class EventProcessor {
             to: event.data.to,
             message: event.data.message
         }, EVENT_TYPES.SMS_NOTIFICATION);
+        this.createNotification(event);
     }
 
     async handleEmailNotification(event: ProcessEvent): Promise<void> {
@@ -58,6 +64,7 @@ class EventProcessor {
             to: event.data.to,
             message: event.data.message
         }, EVENT_TYPES.EMAIL_NOTIFICATION);
+        this.createNotification(event);
     }
 
     async handlePushNotification(event: ProcessEvent): Promise<void> {
@@ -71,6 +78,17 @@ class EventProcessor {
             to: event.data.to,
             message: event.data.message
         }, EVENT_TYPES.PUSH_NOTIFICATION);
+        this.createNotification(event);
+    }
+
+    async createNotification(event: ProcessEvent): Promise<Notification>
+    {
+        return await this.notificationRepository.create({
+            type: event.type,
+            recipient: event.data.to,
+            message: event.data.message,
+            payload: event.data
+        });
     }
 }
 

@@ -6,7 +6,7 @@ export interface NotificationPayload {
 	to: string;
 	subject?: string;
 	message: string;
-	metadata?: any;
+	payload?: any;
 }
 
 export type ChannelType = 'sms' | 'email' | 'push';
