@@ -4,7 +4,7 @@ export interface NotificationChannel {
 
 export interface NotificationPayload {
 	to: string;
-	subject?: string;
+	title: string;
 	message: string;
 	payload?: any;
 }

@@ -48,6 +48,7 @@ class EventProcessor {
         
         await sendNotification({
             to: event.data.to,
+            title: event.data.title,
             message: event.data.message
         }, EVENT_TYPES.SMS_NOTIFICATION);
         this.createNotification(event);
@@ -62,6 +63,7 @@ class EventProcessor {
 
         await sendNotification({
             to: event.data.to,
+            title: event.data.title,
             message: event.data.message
         }, EVENT_TYPES.EMAIL_NOTIFICATION);
         this.createNotification(event);
@@ -76,6 +78,7 @@ class EventProcessor {
 
         await sendNotification({
             to: event.data.to,
+            title: event.data.title,
             message: event.data.message
         }, EVENT_TYPES.PUSH_NOTIFICATION);
         this.createNotification(event);
