@@ -14,7 +14,9 @@
     "fastify": "^5.3.3",
     "fastify-plugin": "^5.0.1",
     "ioredis": "^5.6.1",
-    "prisma": "^6.8.2"
+    "prisma": "^6.8.2",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.28",

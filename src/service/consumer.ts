@@ -2,9 +2,10 @@ import { Message } from "amqplib";
 import { getChannel, getConnection } from "./connection";
 import { processor } from "../events/processor.event";
 import { RateLimitNotificationException } from "../exceptions/rateLimitNotificationException.exception";
+import { logError, logInfo, logWarn } from "../utils/logger.utils"
 
 async function processMessage(msg: Message): Promise<void> {
-	let body = JSON.parse(msg.content.toString());
+	let body = parseMessage(msg);
 	console.log(body, 'Call email API here');
 	console.log(body.type, 'payload type');
 
@@ -13,6 +14,10 @@ async function processMessage(msg: Message): Promise<void> {
 		type: body.type,
 		data: body
 	});
+}
+
+function parseMessage(msg: Message): any {
+	return JSON.parse(msg.content.toString());
 }
 
 const consumeMessage = async () => {
@@ -62,19 +67,19 @@ const consumeMessage = async () => {
 	});
 	await channel.bindQueue(queue, exchange, routingKey);
 	await channel.consume(queue, async (msg: any) => {
-		console.log('processing messages');
+		logInfo('processing messages');
 		const retryCount = parseInt(msg.properties.headers['x-retry'] || 0);
 		try {
 			await processMessage(msg);
 			await channel.ack(msg);
 		} catch (error) {
-			console.error('Rabbitmq Error processing notification queue message:', error);
+			const err = error as Error;
 
 			if (retryCount >= 3) {
-				console.error(`Max retries notification queue count ${retryCount} reached, discarding message`);
+				logError(`Max retries notification queue count ${retryCount} reached, discarding message`, err, parseMessage(msg));
 			} else {
 				if (error instanceof RateLimitNotificationException) {
-					console.warn('Retrying rate limit delay notification queue, message count:', retryCount);
+					logWarn(`Retrying rate limit delay notification queue, message count: ${retryCount}`, parseMessage(msg));
 					channel.sendToQueue(deleyQueue, msg.content, {
 						headers: {
 							...msg.properties.headers,
@@ -82,7 +87,7 @@ const consumeMessage = async () => {
 						}
 					});
 				} else {
-					console.warn('Retrying retry notification queue, message count:', retryCount);
+					logWarn(`Retrying retry notification queue, message count: ${retryCount}`, parseMessage(msg));
 					channel.sendToQueue(retryQueue, msg.content, {
 						headers: {
 							...msg.properties.headers,
