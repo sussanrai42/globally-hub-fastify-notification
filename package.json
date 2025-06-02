@@ -6,6 +6,7 @@
     "consumer": "nodemon src/service/consumer.ts"
   },
   "dependencies": {
+    "@fastify/express": "^4.0.2",
     "@prisma/client": "^6.8.2",
     "@types/amqplib": "^0.10.7",
     "amqplib": "^0.10.8",

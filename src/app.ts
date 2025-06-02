@@ -7,12 +7,19 @@ import dashoardRouter from "./routes/dashboard.route";
 declare module "fastify" {
 	interface FastifyRequest {
 		UserId?: string;
+        user?: {
+            id: string,
+            email: string,
+            name: string,
+            contact_number: string
+        },
 	}
 }
 
 const App = (options: FastifyServerOptions) => {
 	const app = fastify(options)
 
+    app.register(require('@fastify/express'));
 	app.get('/', async (request, reply) => {
         return { hello: 'world' };
     });

@@ -1,5 +1,5 @@
-import axios from "../utils/axios.utils";
-import { serviceConfig } from "../config/service.config";
+import axios from "../utils/axios";
+import serviceConfig from "../config/service.config";
 import { AxiosResponse } from "axios";
 
 export class NotificationApiService {
