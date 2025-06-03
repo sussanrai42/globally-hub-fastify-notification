@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "ecb44dd0-3481-4c93-8442-906a9da494ba",
+		"name": "Fastify Notification Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21563152",
+		"_collection_link": "https://lunar-equinox-511205.postman.co/workspace/Keepler~0f8e4e5e-07cf-4296-bdd8-720df8c332b5/collection/21563152-ecb44dd0-3481-4c93-8442-906a9da494ba?action=share&source=collection_link&creator=21563152"
+	},
+	"item": [
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "List Notifications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{fastify_notification_url}}/api/v1/notifications",
+							"host": [
+								"{{fastify_notification_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{fastify_notification_url}}/api/v1/notifications/:notification_id",
+							"host": [
+								"{{fastify_notification_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications",
+								":notification_id"
+							],
+							"variable": [
+								{
+									"key": "notification_id",
+									"value": "01a59733-afbe-4f06-ad79-9ccf1930bdf1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Overview",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{fastify_notification_url}}/api/v1/dashboard/overview",
+							"host": [
+								"{{fastify_notification_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"dashboard",
+								"overview"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
