@@ -20,10 +20,10 @@ This project is a Fastify-based Node.js service that listens for incoming notifi
     - Goto the main project directory
     - if not docker network has been created, create a network named `golballyhub`
     - Copy .env.example to .env in project directory
-    - Run command to start docker: docker compose up
+    - Run command to start docker: `docker compose up`
     - Once all services are running, access the application at: [goto](http://localhost:3000)
-    - Goto the docker container through command: docker exec -it globallyhubfastify-app bash
-    - After inside a container, run commnad: prisma migrate deploy
+    - Goto the docker container through command: `docker exec -it globallyhubfastify-app bash`
+    - After inside a container, run command: `prisma migrate deploy`
 
 ## How It Works
 - Laravel app publishes a message to the notifications queue in RabbitMQ.
@@ -31,9 +31,8 @@ This project is a Fastify-based Node.js service that listens for incoming notifi
 - Each incoming message is handled and processed by the Fastify service.
 
 ## Testing the Integration
-- After setting up both Laravel and Fastify apps:
-- Use the Laravel API (see its Postman collection) to send a notification.
-- The Fastify app should receive and process the message in real time (check your terminal logs).
+- After setting up both Laravel and Fastify apps: Use the Laravel API (see its Postman collection) to send a notification.
+- The Fastify app should receive and process the message in real time (check your terminal logs or log file inside a log folder).
 
 ## Postman Collection
 - You can find the Postman collection in the root directory of the project: fastify-notification-api.postman_collection.json
@@ -41,4 +40,4 @@ This project is a Fastify-based Node.js service that listens for incoming notifi
 
 ## Note
 - Regarding the docker environment, you need to create network named `golballyhub` so resources like mysql, redis, rabbitmq will be shared via same network.
-- Without docker container running in the laravel notification api service project, this node js project cannot be run. So first run docker in larvaravel notification api service and then come to this project.
+- Without docker container running in the laravel notification api service project, this node js project cannot be run. So first run docker in laravel notification api service and then come to this project.
