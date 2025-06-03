@@ -2,8 +2,7 @@
   "name": "fastify-app",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon index.ts",
-    "consumer": "nodemon src/service/consumer.ts"
+    "dev": "concurrently \"nodemon index.ts\" \"ts-node src/service/consumer.ts\""
   },
   "dependencies": {
     "@fastify/express": "^4.0.2",
@@ -21,6 +20,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.15.28",
+    "concurrently": "^9.1.2",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.4",

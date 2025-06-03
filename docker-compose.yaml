@@ -15,18 +15,6 @@ services:
       sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- npm run dev'
     networks:
       - golballyhub
-  consumer:
-    build:
-      context: .
-      dockerfile: docker/local/Dockerfile
-    container_name: golballyhubfastify-consumer
-    volumes:
-      - .:/usr/src/app
-    working_dir: /usr/src/app
-    command: >
-      sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- npm run consumer'
-    networks:
-      - golballyhub
 networks:
   golballyhub:
     # driver: bridge
