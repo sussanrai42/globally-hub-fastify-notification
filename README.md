@@ -22,6 +22,8 @@ This project is a Fastify-based Node.js service that listens for incoming notifi
     - Copy .env.example to .env in project directory
     - Run command to start docker: docker compose up
     - Once all services are running, access the application at: [goto](http://localhost:3000)
+    - Goto the docker container through command: docker exec -it globallyhubfastify-app bash
+    - After inside a container, run commnad: prisma migrate deploy
 
 ## How It Works
 - Laravel app publishes a message to the notifications queue in RabbitMQ.
