@@ -6,7 +6,7 @@ import {NotificationRepositoryInterface} from "../interfaces/notification.interf
 import { Notification } from '@prisma/client';
 import { canSendNotification } from "../utils/ratelimiter.utils";
 import { RateLimitNotificationException } from "../exceptions/rateLimitNotificationException.exception";
-import { NOTIFICATION_TYPES } from "../constants/notification.type.constant";
+import { NOTIFICATION_TYPES } from "../constants/event.type.constant";
 import notificationApiService, { NotificationApiService } from "../service/notificationApi.service";
 
 class EventProcessor {
