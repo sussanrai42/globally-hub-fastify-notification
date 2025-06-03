@@ -32,11 +32,11 @@ const consumeMessage = async () => {
 	});
 
 	const channel = await getChannel();
-	const exchange = 'laravel-exchange1';
-	const retryQueue = 'retry_notification_queue';
-	const deleyQueue = 'delay_notification_queue';
-	const queue = 'notify-queue12';
-	const routingKey = 'test-queue1';
+	const exchange = 'laravel-notification-exchange';
+	const retryQueue = 'retry_again_notification_queue';
+	const deleyQueue = 'delay_some_notification_queue';
+	const queue = 'notify-laravel-queue';
+	const routingKey = 'notification-queue-routing-key';
 
 	await channel.assertExchange(exchange, 'direct', { durable: true });
 	await channel.assertQueue(queue, {
@@ -111,5 +111,3 @@ const consumeMessage = async () => {
     process.exit(1);
   }
 })();
-
-export { consumeMessage }
