@@ -1,5 +1,4 @@
 import fastify, { FastifyRequest, FastifyServerOptions } from "fastify";
-import routes from "./routes/api.route";
 import { publishMessage } from "./service/producer";
 import notificationRouter from "./routes/notification.route";
 import dashoardRouter from "./routes/dashboard.route";
@@ -21,12 +20,8 @@ const App = (options: FastifyServerOptions) => {
 
     app.register(require('@fastify/express'));
 	app.get('/', async (request, reply) => {
-        return { hello: 'world' };
+        return { status: 'success' };
     });
-
-    routes.forEach((route, index)=>{
-        app.route(route)
-    })
 
     app.get('/send', async () => {
         const message = 'Hello from /send route';
